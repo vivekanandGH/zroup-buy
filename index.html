@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Buy Platform</title>
+    <style>
+        :root {
+            --color-primary: #0071e3;
+            --color-primary-hover: #0077ED;
+            --color-background: #fbfbfd;
+            --color-surface: #FFFFFF;
+            --color-text: #1d1d1f;
+            --color-text-secondary: #86868b;
+            --color-border: #d2d2d7;
+            --color-error: #ff3b30;
+            --color-success: #34c759;
+            --radius-base: 12px;
+            --radius-lg: 18px;
+            --space-8: 8px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-20: 20px;
+            --space-24: 24px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+            background: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.47059;
+            letter-spacing: -0.022em;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: var(--color-surface);
+            min-height: 100vh;
+        }
+
+        @media (min-width: 735px) {
+            .container {
+                max-width: 692px;
+            }
+        }
+
+        @media (min-width: 1068px) {
+            .container {
+                max-width: 980px;
+            }
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            color: var(--color-text);
+            padding: 17px var(--space-20);
+            text-align: center;
+            border-bottom: 1px solid var(--color-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header h1 {
+            font-size: 21px;
+            font-weight: 600;
+            letter-spacing: 0.011em;
+        }
+
+        .content {
+            padding: 40px 20px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 735px) {
+            .content {
+                padding: 60px 40px;
+                max-width: 580px;
+            }
+        }
+
+        @media (min-width: 1068px) {
+            .content {
+                padding: 80px 40px;
+                max-width: 640px;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 400;
+            font-size: 17px;
+            color: var(--color-text);
+            letter-spacing: -0.022em;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            font-size: 17px;
+            background: var(--color-surface);
+            color: var(--color-text);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-appearance: none;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px 24px;
+            border: none;
+            border-radius: var(--radius-base);
+            font-size: 17px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: -0.022em;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-hover);
+            transform: scale(1.01);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-link {
+            background: transparent;
+            color: var(--color-primary);
+            border: none;
+            margin-top: 16px;
+            font-size: 17px;
+            padding: 8px;
+            text-decoration: none;
+        }
+
+        .btn-link:hover {
+            text-decoration: underline;
+        }
+
+        .pin-input-group {
+            display: flex;
+            gap: var(--space-12);
+            justify-content: center;
+            margin-bottom: var(--space-24);
+        }
+
+        .pin-digit {
+            width: 60px;
+            height: 60px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-base);
+        }
+
+        .pin-digit:focus {
+            border-color: var(--color-primary);
+        }
+
+        .product-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .product-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .product-card h3 {
+            font-size: 21px;
+            margin-bottom: 8px;
+            color: var(--color-text);
+            font-weight: 600;
+            letter-spacing: 0.011em;
+        }
+
+        .product-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: var(--space-12);
+            padding-top: var(--space-12);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .interest-count {
+            background: var(--color-primary);
+            color: white;
+            padding: var(--space-8) var(--space-12);
+            border-radius: var(--radius-base);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .month-badge {
+            background: #F5F5F5;
+            padding: var(--space-8) var(--space-12);
+            border-radius: var(--radius-base);
+            font-size: 14px;
+            color: var(--color-text-secondary);
+        }
+
+        .error-message {
+            color: var(--color-error);
+            font-size: 14px;
+            margin-top: var(--space-8);
+        }
+
+        .success-message {
+            color: var(--color-success);
+            font-size: 14px;
+            margin-top: var(--space-8);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .nav-tabs {
+            display: flex;
+            margin-bottom: var(--space-20);
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: var(--space-12);
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--color-text-secondary);
+            position: relative;
+        }
+
+        .nav-tab.active {
+            color: var(--color-primary);
+        }
+
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--color-primary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 24px;
+            color: var(--color-text-secondary);
+            font-size: 17px;
+        }
+
+        .logout-btn {
+            position: absolute;
+            top: 17px;
+            right: 20px;
+            background: transparent;
+            color: var(--color-primary);
+            border: none;
+            padding: 8px 16px;
+            border-radius: var(--radius-base);
+            font-size: 17px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(0, 113, 227, 0.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            max-width: 400px;
+            margin: 20px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-content h3 {
+            font-size: 21px;
+            margin-bottom: 12px;
+            color: var(--color-text);
+        }
+
+        .modal-content p {
+            font-size: 17px;
+            color: var(--color-text-secondary);
+            margin-bottom: 24px;
+        }
+
+        select.form-control {
+            background: white;
+            cursor: pointer;
+        }
+
+        .user-info {
+            background: #E0F2F1;
+            padding: var(--space-12);
+            border-radius: var(--radius-base);
+            margin-bottom: var(--space-16);
+            font-size: 14px;
+            color: var(--color-text);
+        }
+
+        .btn-join {
+            padding: var(--space-8) var(--space-16);
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-base);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-join:hover {
+            background: var(--color-primary-hover);
+        }
+
+        .btn-join:disabled {
+            background: var(--color-border);
+            cursor: not-allowed;
+        }
+
+        .chat-section {
+            margin-top: var(--space-16);
+            border-top: 1px solid var(--color-border);
+            padding-top: var(--space-16);
+        }
+
+        .chat-messages {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #F9F9F9;
+            border-radius: var(--radius-base);
+            padding: var(--space-12);
+            margin-bottom: var(--space-12);
+        }
+
+        .chat-message {
+            margin-bottom: var(--space-12);
+            font-size: 13px;
+        }
+
+        .chat-message strong {
+            color: var(--color-primary);
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .chat-message span {
+            color: var(--color-text-secondary);
+            font-size: 11px;
+        }
+
+        .chat-input-group {
+            display: flex;
+            gap: var(--space-8);
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: var(--space-8);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            font-size: 14px;
+        }
+
+        .btn-send {
+            padding: var(--space-8) var(--space-16);
+            background: var(--color-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-base);
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .chat-empty {
+            text-align: center;
+            color: var(--color-text-secondary);
+            font-size: 13px;
+            padding: var(--space-16);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sign Up Screen -->
+        <div id="signupScreen" class="screen hidden">
+            <div class="header">
+                <h1>Zroup Buy</h1>
+            </div>
+            <div class="content">
+                <h2 style="font-size: 32px; font-weight: 600; text-align: center; margin-bottom: 12px; letter-spacing: 0.004em;">Create Account</h2>
+                <p style="text-align: center; color: var(--color-text-secondary); margin-bottom: 32px; font-size: 17px;">Join Zroup Buy and save together</p>
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="signupFirstName" placeholder="Enter your first name" maxlength="30" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="signupLastName" placeholder="Enter your last name" maxlength="30" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="signupEmail" placeholder="Enter your email" maxlength="50" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Mobile Number</label>
+                        <input type="tel" class="form-control" id="signupMobile" placeholder="Enter 10-digit mobile number" maxlength="10" pattern="[0-9]{10}" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Set 4-Digit PIN</label>
+                        <input type="password" class="form-control" id="signupPin" placeholder="Create 4-digit PIN" maxlength="4" inputmode="numeric" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Confirm PIN</label>
+                        <input type="password" class="form-control" id="confirmPin" placeholder="Confirm your PIN" maxlength="4" inputmode="numeric" required>
+                    </div>
+                    <div id="signupError" class="error-message hidden"></div>
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                    <button type="button" class="btn btn-link" onclick="showScreen('signinScreen')">Already have an account? Sign In</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Sign In Screen -->
+        <div id="signinScreen" class="screen">
+            <div class="header">
+                <h1>Zroup Buy</h1>
+            </div>
+            <div class="content">
+                <h2 style="font-size: 32px; font-weight: 600; text-align: center; margin-bottom: 12px; letter-spacing: 0.004em;">Welcome Back</h2>
+                <p style="text-align: center; color: var(--color-text-secondary); margin-bottom: 32px; font-size: 17px;">Sign in to continue saving</p>
+                <form id="signinForm">
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="signinEmail" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Enter 4-Digit PIN</label>
+                        <div class="pin-input-group">
+                            <input type="password" class="pin-digit" maxlength="1" inputmode="numeric" required>
+                            <input type="password" class="pin-digit" maxlength="1" inputmode="numeric" required>
+                            <input type="password" class="pin-digit" maxlength="1" inputmode="numeric" required>
+                            <input type="password" class="pin-digit" maxlength="1" inputmode="numeric" required>
+                        </div>
+                    </div>
+                    <div id="signinError" class="error-message hidden"></div>
+                    <button type="submit" class="btn btn-primary">Sign In</button>
+                    <button type="button" class="btn btn-link" onclick="showScreen('signupScreen')">Don't have an account? Sign Up</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Landing Screen -->
+        <div id="landingScreen" class="screen hidden">
+            <div class="header" style="position: relative;">
+                <h1>Zroup Buy</h1>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+            <div class="content">
+                <div id="userInfo" class="user-info" style="background: linear-gradient(135deg, rgba(0, 113, 227, 0.1), rgba(52, 199, 89, 0.1)); padding: 16px 20px; border-radius: var(--radius-base); margin-bottom: 24px; font-size: 17px; color: var(--color-text);"></div>
+                
+                <div class="nav-tabs">
+                    <button class="nav-tab active" onclick="switchTab('add')">Add Interest</button>
+                    <button class="nav-tab" onclick="switchTab('view')">View All</button>
+                </div>
+
+                <!-- Add Product Interest -->
+                <div id="addTab">
+                    <h2 style="margin-bottom: 8px; font-size: 28px; font-weight: 600; letter-spacing: 0.007em;">Express Your Interest</h2>
+                    <p style="color: var(--color-text-secondary); margin-bottom: 32px; font-size: 17px;">Tell us what you'd like to buy</p>
+                    <form id="productForm">
+                        <div class="form-group">
+                            <label class="form-label">Product Category</label>
+                            <select class="form-control" id="productCategory" required onchange="updateBrands()">
+                                <option value="">Select category</option>
+                                <option value="Cars">Cars</option>
+                                <option value="Bikes">Bikes</option>
+                                <option value="Smartphones">Smartphones</option>
+                                <option value="Appliances">Home Appliances</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Brand</label>
+                            <select class="form-control" id="productBrand" required onchange="updateModels()">
+                                <option value="">Select brand first</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Product Model</label>
+                            <select class="form-control" id="productName" required>
+                                <option value="">Select model</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Target Purchase Month</label>
+                            <input type="month" class="form-control" id="purchaseMonth" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">State</label>
+                            <select class="form-control" id="state" required onchange="updateDistricts()">
+                                <option value="">Select state</option>
+                                <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                                <option value="Assam">Assam</option>
+                                <option value="Bihar">Bihar</option>
+                                <option value="Chhattisgarh">Chhattisgarh</option>
+                                <option value="Delhi">Delhi</option>
+                                <option value="Goa">Goa</option>
+                                <option value="Gujarat">Gujarat</option>
+                                <option value="Haryana">Haryana</option>
+                                <option value="Himachal Pradesh">Himachal Pradesh</option>
+                                <option value="Jharkhand">Jharkhand</option>
+                                <option value="Karnataka">Karnataka</option>
+                                <option value="Kerala">Kerala</option>
+                                <option value="Madhya Pradesh">Madhya Pradesh</option>
+                                <option value="Maharashtra">Maharashtra</option>
+                                <option value="Manipur">Manipur</option>
+                                <option value="Meghalaya">Meghalaya</option>
+                                <option value="Mizoram">Mizoram</option>
+                                <option value="Nagaland">Nagaland</option>
+                                <option value="Odisha">Odisha</option>
+                                <option value="Punjab">Punjab</option>
+                                <option value="Rajasthan">Rajasthan</option>
+                                <option value="Sikkim">Sikkim</option>
+                                <option value="Tamil Nadu">Tamil Nadu</option>
+                                <option value="Telangana">Telangana</option>
+                                <option value="Tripura">Tripura</option>
+                                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                <option value="Uttarakhand">Uttarakhand</option>
+                                <option value="West Bengal">West Bengal</option>
+                                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+                                <option value="Ladakh">Ladakh</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">District</label>
+                            <select class="form-control" id="district" required onchange="updateAreas()">
+                                <option value="">Select district</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Area</label>
+                            <select class="form-control" id="area" required>
+                                <option value="">Select area</option>
+                            </select>
+                        </div>
+                        <div id="productError" class="error-message hidden"></div>
+                        <div id="productSuccess" class="success-message hidden" style="background: rgba(52, 199, 89, 0.1); padding: 16px; border-radius: var(--radius-base); border: 1px solid var(--color-success);"></div>
+                        <button type="submit" class="btn btn-primary">Submit Interest</button>
+                    </form>
+                </div>
+
+                <!-- View All Products -->
+                <div id="viewTab" class="hidden">
+                    <h2 style="margin-bottom: 8px; font-size: 28px; font-weight: 600; letter-spacing: 0.007em;">Active Product Interests</h2>
+                    <p style="color: var(--color-text-secondary); margin-bottom: 32px; font-size: 17px;">Join groups and get better deals</p>
+                    <div id="productList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="modal">
+            <div class="modal-content">
+                <h3>Success!</h3>
+                <p>Your interest has been added</p>
+                <button class="btn btn-primary" onclick="closeModal()">OK</button>
+            </div>
+        </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // In-memory data storage
+        let users = [];
+        let products = [];
+        let currentUser = null;
+        let chats = {}; // Store chats by product ID
+
+        // Product database
+        const productDatabase = {
+            Cars: {
+                'Tata': ['Nexon', 'Harrier', 'Safari', 'Punch', 'Altroz'],
+                'Hyundai': ['Creta', 'Venue', 'Verna', 'i20', 'Exter'],
+                'Maruti': ['Swift', 'Brezza', 'Ertiga', 'Baleno', 'Fronx', 'WagonR'],
+                'Mahindra': ['Scorpio N', 'XUV700', 'Thar', 'Bolero', 'XUV 3XO'],
+                'Kia': ['Seltos', 'Sonet', 'Carens', 'EV6'],
+                'Toyota': ['Fortuner', 'Innova Crysta', 'Urban Cruiser Hyryder', 'Glanza']
+            },
+            Bikes: {
+                'Royal Enfield': ['Classic 350', 'Himalayan', 'Meteor 350', 'Hunter 350', 'Bullet 350'],
+                'Honda': ['Activa 125', 'CB Shine', 'Unicorn', 'Hornet 2.0', 'SP125'],
+                'Bajaj': ['Pulsar 150', 'Pulsar N160', 'Dominar 400', 'Platina 110', 'CT110X'],
+                'TVS': ['Apache RTR 160', 'Jupiter', 'Raider 125', 'Ntorq 125', 'Sport'],
+                'Yamaha': ['FZ-S', 'MT-15', 'R15 V4', 'Fascino 125', 'Ray ZR']
+            },
+            Smartphones: {
+                'Samsung': ['Galaxy S25 Ultra', 'Galaxy S25', 'Galaxy A55', 'Galaxy M35', 'Galaxy F55'],
+                'Apple': ['iPhone 16 Pro Max', 'iPhone 16 Pro', 'iPhone 16', 'iPhone 15', 'iPhone SE'],
+                'OnePlus': ['OnePlus 13', '13R', '12', '12R', 'Nord 4'],
+                'Xiaomi': ['14 Ultra', '14', 'Redmi Note 14 Pro', 'Redmi 13', 'Poco X7'],
+                'Vivo': ['X200 Pro', 'V40', 'T3', 'Y200', 'Y58'],
+                'Realme': ['GT 7 Pro', '13 Pro+', 'Narzo 70', 'C65', 'P2 Pro'],
+                'Motorola': ['Edge 60 Pro', 'Edge 50 Ultra', 'G85', 'G54', 'G34']
+            },
+            Appliances: {
+                'Samsung': ['French Door Refrigerator', 'Top Load Washer', 'Microwave Oven', 'Air Purifier'],
+                'LG': ['InstaView Refrigerator', 'Front Load Washer', 'Dishwasher', 'Air Conditioner'],
+                'Whirlpool': ['Side by Side Refrigerator', 'Semi Automatic Washer', 'Water Purifier'],
+                'Bosch': ['Built-in Oven', 'Dishwasher 800 Series', 'Induction Cooktop'],
+                'Philips': ['Air Fryer', 'Mixer Grinder', 'Electric Kettle', 'Toaster'],
+                'Bajaj': ['Mixer Grinder', 'Induction Cooktop', 'Electric Kettle', 'Toaster'],
+                'Panasonic': ['Microwave Oven', 'Refrigerator', 'Water Purifier', 'Air Conditioner']
+            }
+        };
+
+        // Initialize with empty data and test user
+        function initializeSampleData() {
+            products = [];
+            chats = {};
+            // Add test user for testing
+            users.push({
+                firstName: 'Test',
+                lastName: 'User',
+                email: 'test@test.com',
+                mobile: '9894567890',
+                pin: '9894'
+            });
+        }
+
+        initializeSampleData();
+
+        // Update brands based on category
+        function updateBrands() {
+            const category = document.getElementById('productCategory').value;
+            const brandSelect = document.getElementById('productBrand');
+            const modelSelect = document.getElementById('productName');
+            
+            brandSelect.innerHTML = '<option value="">Select brand</option>';
+            modelSelect.innerHTML = '<option value="">Select model</option>';
+            
+            if (category && productDatabase[category]) {
+                Object.keys(productDatabase[category]).forEach(brand => {
+                    const option = document.createElement('option');
+                    option.value = brand;
+                    option.textContent = brand;
+                    brandSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Update models based on brand
+        function updateModels() {
+            const category = document.getElementById('productCategory').value;
+            const brand = document.getElementById('productBrand').value;
+            const modelSelect = document.getElementById('productName');
+            
+            modelSelect.innerHTML = '<option value="">Select model</option>';
+            
+            if (category && brand && productDatabase[category] && productDatabase[category][brand]) {
+                productDatabase[category][brand].forEach(model => {
+                    const option = document.createElement('option');
+                    option.value = `${brand} ${model}`;
+                    option.textContent = model;
+                    modelSelect.appendChild(option);
+                });
+            }
+        }
+
+        // PIN input auto-advance
+        document.addEventListener('DOMContentLoaded', function() {
+            const pinInputs = document.querySelectorAll('.pin-digit');
+            pinInputs.forEach((input, index) => {
+                input.addEventListener('input', function() {
+                    if (this.value.length === 1 && index < pinInputs.length - 1) {
+                        pinInputs[index + 1].focus();
+                    }
+                });
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace' && this.value === '' && index > 0) {
+                        pinInputs[index - 1].focus();
+                    }
+                });
+            });
+        });
+
+        // Show screen
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => screen.classList.add('hidden'));
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        // Form validation
+        document.getElementById('signupFirstName').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^a-zA-Z\s]/g, '').slice(0, 30);
+        });
+
+        document.getElementById('signupLastName').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^a-zA-Z\s]/g, '').slice(0, 30);
+        });
+
+        document.getElementById('signupEmail').addEventListener('input', function(e) {
+            this.value = this.value.slice(0, 50);
+        });
+
+        document.getElementById('signupMobile').addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '').slice(0, 10);
+        });
+
+        document.getElementById('signupPin').addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '');
+        });
+
+        document.getElementById('confirmPin').addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '');
+        });
+
+        // State/District/Area database
+        const locationDatabase = {
+            'Tamil Nadu': {
+                'Chennai': ['Anna Nagar', 'T Nagar', 'Velachery', 'Adyar', 'Mylapore', 'Guindy', 'Porur'],
+                'Coimbatore': ['Peelamedu', 'RS Puram', 'Gandhipuram', 'Saravanampatti', 'Singanallur'],
+                'Madurai': ['Anna Nagar', 'KK Nagar', 'Thirunagar', 'Vilangudi', 'Pasumalai'],
+                'Tiruchirappalli': ['Cantonment', 'Srirangam', 'Thillai Nagar', 'KK Nagar', 'Woraiyur'],
+                'Salem': ['New Fairlands', 'Five Roads', 'Suramangalam', 'Kitchipalayam', 'Hasthampatti']
+            },
+            'Karnataka': {
+                'Bengaluru Urban': ['Koramangala', 'Whitefield', 'Electronic City', 'Jayanagar', 'Indiranagar', 'HSR Layout', 'Marathahalli'],
+                'Mysuru': ['Saraswathipuram', 'Kuvempunagar', 'Vidyaranyapuram', 'Hebbal', 'Gokulam'],
+                'Mangaluru': ['Kadri', 'Bejai', 'Kankanady', 'Hampankatta', 'Valencia'],
+                'Hubballi': ['Vidyanagar', 'Keshwapur', 'Unkal', 'Gokul Road', 'Navanagar'],
+                'Belagavi': ['Tilakwadi', 'Camp', 'Hindwadi', 'Shahapur', 'Angol']
+            },
+            'Maharashtra': {
+                'Mumbai': ['Andheri', 'Bandra', 'Powai', 'Borivali', 'Thane', 'Navi Mumbai', 'Malad'],
+                'Pune': ['Koregaon Park', 'Hinjewadi', 'Wakad', 'Baner', 'Kothrud', 'Hadapsar', 'Viman Nagar'],
+                'Nagpur': ['Sitabuldi', 'Dharampeth', 'Sadar', 'Hingna', 'Wadi'],
+                'Nashik': ['College Road', 'Gangapur Road', 'Panchavati', 'Satpur', 'Adgaon'],
+                'Aurangabad': ['CIDCO', 'Garkheda', 'Jalna Road', 'Station Road', 'Waluj']
+            },
+            'Delhi': {
+                'Central Delhi': ['Connaught Place', 'Karol Bagh', 'Paharganj', 'Daryaganj', 'Chanakyapuri'],
+                'North Delhi': ['Civil Lines', 'Kamla Nagar', 'Mall Road', 'Pitampura', 'Rohini'],
+                'South Delhi': ['Greater Kailash', 'Lajpat Nagar', 'Defence Colony', 'Hauz Khas', 'Safdarjung'],
+                'East Delhi': ['Laxmi Nagar', 'Preet Vihar', 'Mayur Vihar', 'Patparganj', 'Gandhi Nagar'],
+                'West Delhi': ['Janakpuri', 'Rajouri Garden', 'Tilak Nagar', 'Uttam Nagar', 'Dwarka']
+            },
+            'Gujarat': {
+                'Ahmedabad': ['Satellite', 'Vastrapur', 'Bopal', 'Maninagar', 'Navrangpura', 'SG Highway'],
+                'Surat': ['Adajan', 'Vesu', 'Citylight', 'Athwa', 'Rander', 'Udhna'],
+                'Vadodara': ['Alkapuri', 'Gotri', 'Vasna', 'Fatehgunj', 'Akota', 'Manjalpur'],
+                'Rajkot': ['University Road', 'Kalavad Road', 'Yagnik Road', 'Raiya Road', 'Mavdi'],
+                'Gandhinagar': ['Sector 1', 'Sector 7', 'Sector 21', 'Sector 15', 'Infocity']
+            },
+            'Rajasthan': {
+                'Jaipur': ['Malviya Nagar', 'Vaishali Nagar', 'C-Scheme', 'Mansarovar', 'Jagatpura'],
+                'Jodhpur': ['Paota', 'Shastri Nagar', 'Sardarpura', 'Ratanada', 'Basni'],
+                'Udaipur': ['Fateh Sagar', 'Sukhadia Circle', 'University', 'Hiran Magri', 'Pratap Nagar'],
+                'Kota': ['Vigyan Nagar', 'Dadabari', 'Jawahar Nagar', 'Mahaveer Nagar', 'Talwandi'],
+                'Bikaner': ['Sadul Ganj', 'Gangashahar', 'Kote Gate', 'Rampuria', 'Karni Industrial']
+            },
+            'Uttar Pradesh': {
+                'Lucknow': ['Gomti Nagar', 'Hazratganj', 'Aliganj', 'Indira Nagar', 'Mahanagar'],
+                'Kanpur': ['Civil Lines', 'Swaroop Nagar', 'Kidwai Nagar', 'Kalyanpur', 'Govind Nagar'],
+                'Ghaziabad': ['Raj Nagar', 'Vasundhara', 'Indirapuram', 'Crossings Republik', 'Kaushambi'],
+                'Agra': ['Sadar Bazar', 'Sanjay Place', 'Kamla Nagar', 'Dayalbagh', 'Sikandra'],
+                'Varanasi': ['Lanka', 'Sigra', 'Cantonment', 'Mahmoorganj', 'Pandeypur']
+            },
+            'West Bengal': {
+                'Kolkata': ['Salt Lake', 'Park Street', 'Ballygunge', 'Alipore', 'New Town', 'Howrah'],
+                'Howrah': ['Shibpur', 'Liluah', 'Bally', 'Santragachi', 'Kadamtala'],
+                'Durgapur': ['City Centre', 'Benachity', 'Bidhan Nagar', 'Steel Township', 'Muchipara'],
+                'Siliguri': ['Matigara', 'Pradhan Nagar', 'Bhaktinagar', 'Dagapur', 'Salugara'],
+                'Asansol': ['Burnpur', 'Hirapur', 'Ushagram', 'Sen Raleigh', 'Apcar Garden']
+            },
+            'Telangana': {
+                'Hyderabad': ['Gachibowli', 'Banjara Hills', 'Jubilee Hills', 'Kondapur', 'Madhapur', 'Hitec City'],
+                'Warangal': ['Hanamkonda', 'Kazipet', 'Subedari', 'Waddepally', 'Shayampet'],
+                'Nizamabad': ['Nizamabad Urban', 'Dichpally', 'Bodhan', 'Armoor', 'Kamareddy'],
+                'Karimnagar': ['Karimnagar Urban', 'Huzurabad', 'Manakondur', 'Choppadandi', 'Vemulawada'],
+                'Khammam': ['Khammam Urban', 'Sathupalli', 'Madhira', 'Kothagudem', 'Yellandu']
+            },
+            'Andhra Pradesh': {
+                'Visakhapatnam': ['MVP Colony', 'Dwaraka Nagar', 'Gajuwaka', 'Madhurawada', 'Rushikonda'],
+                'Vijayawada': ['Benz Circle', 'Labbipet', 'Governorpet', 'Patamata', 'Auto Nagar'],
+                'Guntur': ['Brodipet', 'Kothapet', 'Arundelpet', 'Lakshmi Puram', 'Pattabhipuram'],
+                'Nellore': ['Magunta Layout', 'South Mopur', 'Dargamitta', 'Ramamurthy Nagar', 'Vedayapalem'],
+                'Kurnool': ['Kurnool Urban', 'Adoni', 'Yemmiganur', 'Dhone', 'Allagadda']
+            },
+            'Kerala': {
+                'Thiruvananthapuram': ['Pattom', 'Kesavadasapuram', 'Vellayambalam', 'Sasthamangalam', 'Kowdiar'],
+                'Kochi': ['Marine Drive', 'Kadavanthra', 'Panampilly Nagar', 'Kaloor', 'Edappally'],
+                'Kozhikode': ['Mavoor Road', 'Kannur Road', 'Medical College', 'Westhill', 'Ulliyeri'],
+                'Kottayam': ['Baker Junction', 'CMS College', 'Collectorate', 'MC Road', 'Puthuppally'],
+                'Thrissur': ['Swaraj Round', 'East Fort', 'West Fort', 'Chembukkavu', 'Ollur']
+            }
+        };
+
+        // Update districts based on state
+        function updateDistricts() {
+            const state = document.getElementById('state').value;
+            const districtSelect = document.getElementById('district');
+            const areaSelect = document.getElementById('area');
+            
+            districtSelect.innerHTML = '<option value="">Select district</option>';
+            areaSelect.innerHTML = '<option value="">Select area</option>';
+            
+            if (state && locationDatabase[state]) {
+                Object.keys(locationDatabase[state]).forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district;
+                    option.textContent = district;
+                    districtSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Update areas based on district
+        function updateAreas() {
+            const state = document.getElementById('state').value;
+            const district = document.getElementById('district').value;
+            const areaSelect = document.getElementById('area');
+            
+            areaSelect.innerHTML = '<option value="">Select area</option>';
+            
+            if (state && district && locationDatabase[state] && locationDatabase[state][district]) {
+                locationDatabase[state][district].forEach(area => {
+                    const option = document.createElement('option');
+                    option.value = area;
+                    option.textContent = area;
+                    areaSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Sign Up
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const firstName = document.getElementById('signupFirstName').value.trim();
+            const lastName = document.getElementById('signupLastName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const mobile = document.getElementById('signupMobile').value;
+            const pin = document.getElementById('signupPin').value;
+            const confirmPin = document.getElementById('confirmPin').value;
+            const errorDiv = document.getElementById('signupError');
+
+            errorDiv.classList.add('hidden');
+
+            if (!firstName || !lastName) {
+                errorDiv.textContent = 'Please enter your first and last name!';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            if (!/^[a-zA-Z\s]+$/.test(firstName) || !/^[a-zA-Z\s]+$/.test(lastName)) {
+                errorDiv.textContent = 'Name should contain only letters!';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            if (pin !== confirmPin) {
+                errorDiv.textContent = 'PINs do not match!';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            if (pin.length !== 4 || !/^\d{4}$/.test(pin)) {
+                errorDiv.textContent = 'PIN must be exactly 4 digits!';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            if (mobile.length !== 10 || !/^\d{10}$/.test(mobile)) {
+                errorDiv.textContent = 'Mobile number must be exactly 10 digits!';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            if (users.find(u => u.email === email)) {
+                errorDiv.textContent = 'Email already registered!';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            users.push({ firstName, lastName, email, mobile, pin });
+            document.getElementById('signupForm').reset();
+            const modal = document.getElementById('successModal');
+            modal.querySelector('p').textContent = 'Account created successfully!';
+            modal.classList.add('show');
+            
+            // Store callback to navigate to signin
+            window.signupSuccessCallback = function() {
+                document.getElementById('signinEmail').value = '';
+                document.querySelectorAll('.pin-digit').forEach(input => input.value = '');
+                showScreen('signinScreen');
+                window.signupSuccessCallback = null;
+            };
+        });
+
+        // Sign In
+        document.getElementById('signinForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('signinEmail').value;
+            const pinInputs = document.querySelectorAll('.pin-digit');
+            const pin = Array.from(pinInputs).map(input => input.value).join('');
+            const errorDiv = document.getElementById('signinError');
+
+            errorDiv.classList.add('hidden');
+
+            const user = users.find(u => u.email === email && u.pin === pin);
+            if (user) {
+                currentUser = user;
+                document.getElementById('userInfo').innerHTML = `<strong>Welcome, ${user.firstName}!</strong>`;
+                showScreen('landingScreen');
+                displayProducts();
+                document.getElementById('signinForm').reset();
+                pinInputs.forEach(input => input.value = '');
+            } else {
+                errorDiv.textContent = 'Invalid email or PIN!';
+                errorDiv.classList.remove('hidden');
+            }
+        });
+
+        // Month picker functionality
+        document.getElementById('purchaseMonth').addEventListener('click', function() {
+            document.getElementById('purchaseMonthHidden').click();
+        });
+
+        document.getElementById('purchaseMonthHidden').addEventListener('change', function() {
+            const monthValue = this.value;
+            if (monthValue) {
+                const date = new Date(monthValue + '-01');
+                const formatted = date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toUpperCase();
+                document.getElementById('purchaseMonth').value = formatted;
+            }
+        });
+
+        // Product Form
+        document.getElementById('productForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const category = document.getElementById('productCategory').value;
+            const brand = document.getElementById('productBrand').value;
+            const name = document.getElementById('productName').value;
+            const month = document.getElementById('purchaseMonth').value;
+            const state = document.getElementById('state').value;
+            const district = document.getElementById('district').value;
+            const area = document.getElementById('area').value;
+            const errorDiv = document.getElementById('productError');
+
+            errorDiv.classList.add('hidden');
+
+            if (!category || !brand || !name || !month || !state || !district || !area) {
+                errorDiv.textContent = 'Please fill all required fields!';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            // Validate month is in future and within 24 months
+            const selectedDate = new Date(month + '-01');
+            const today = new Date();
+            const currentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+            const maxDate = new Date(today);
+            maxDate.setMonth(maxDate.getMonth() + 24);
+            const maxMonth = new Date(maxDate.getFullYear(), maxDate.getMonth(), 1);
+
+            if (selectedDate < currentMonth) {
+                errorDiv.textContent = 'Please select a future month!';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            if (selectedDate > maxMonth) {
+                errorDiv.textContent = 'Please select a month within the next 24 months!';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            // Create location key for grouping
+            const locationKey = `${state}-${district}-${area}`;
+
+            // Check if product already exists for this month and location
+            const existingProduct = products.find(p => 
+                p.name.toLowerCase() === name.toLowerCase() && 
+                p.month === month && 
+                p.locationKey === locationKey
+            );
+
+            if (existingProduct) {
+                if (existingProduct.users.includes(currentUser.email)) {
+                    errorDiv.textContent = 'You have already expressed interest in this product for this month and location!';
+                    errorDiv.classList.remove('hidden');
+                    return;
+                }
+                existingProduct.users.push(currentUser.email);
+            } else {
+                const newProduct = {
+                    id: products.length + 1,
+                    category,
+                    brand,
+                    name,
+                    month: month,
+                    state: state,
+                    district: district,
+                    area: area,
+                    locationKey: locationKey,
+                    users: [currentUser.email],
+                    createdBy: currentUser.email
+                };            products.push(newProduct);
+            chats[newProduct.id] = [];
+        }
+
+        // Show success message in the form
+        const successDiv = document.getElementById('productSuccess');
+        successDiv.textContent = '✓ Your interest has been added successfully!';
+        successDiv.classList.remove('hidden');
+        
+        // Reset form
+        document.getElementById('productForm').reset();
+        document.getElementById('district').innerHTML = '<option value="">Select district</option>';
+        document.getElementById('area').innerHTML = '<option value="">Select area</option>';
+        
+        // Hide success message after 3 seconds
+        setTimeout(() => {
+            successDiv.classList.add('hidden');
+        }, 3000);
+        
+        // Update the product list
+        displayProducts();
+        });
+
+        function closeModal() {
+            const modal = document.getElementById('successModal');
+            modal.classList.remove('show');
+            
+            // Execute appropriate callback
+            if (window.signupSuccessCallback) {
+                window.signupSuccessCallback();
+            } else if (window.productSuccessCallback) {
+                window.productSuccessCallback();
+            }
+        }
+
+        // Display Products
+        function displayProducts() {
+            const productList = document.getElementById('productList');
+            
+            if (products.length === 0) {
+                productList.innerHTML = '<div class="empty-state">No active interests yet.<br>Add your first product interest to get started!</div>';
+                return;
+            }
+
+            // Group by product name and location, then by month
+            const groupedProducts = products.reduce((acc, product) => {
+                const key = `${product.name}-${product.locationKey}`;
+                if (!acc[key]) acc[key] = [];
+                acc[key].push(product);
+                return acc;
+            }, {});
+
+            let html = '';
+            Object.keys(groupedProducts).forEach(productKey => {
+                const productGroup = groupedProducts[productKey];
+                const firstProduct = productGroup[0];
+                
+                // Sort by month within each product group
+                productGroup.sort((a, b) => new Date(a.month) - new Date(b.month));
+                
+                html += `<div class="product-group" style="margin-bottom: 32px; padding: 20px; background: #f8f9fa; border-radius: var(--radius-lg);">`;
+                html += `<h3 style="margin-bottom: 16px; font-size: 20px; color: var(--color-text);">${firstProduct.name}</h3>`;
+                html += `<p style="color: var(--color-text-secondary); font-size: 14px; margin-bottom: 16px;">Location: ${firstProduct.area}, ${firstProduct.district}, ${firstProduct.state} • ${firstProduct.category}${firstProduct.brand ? ' • ' + firstProduct.brand : ''}</p>`;
+                
+                productGroup.forEach(product => {
+                    const userCount = product.users.length;
+                    const isHighInterest = userCount >= 10;
+                    const isMember = product.users.includes(currentUser.email);
+                    const chatMessages = chats[product.id] || [];
+                    
+                    html += `
+                        <div class="product-card">
+                            <h3>${product.name}</h3>
+                            <p style="color: var(--color-text-secondary); font-size: 14px; margin-bottom: 8px;">
+                                ${product.category}${product.brand ? ' • ' + product.brand : ''}
+                            </p>
+                            <div class="product-info">
+                                <span class="interest-count" style="background: ${isHighInterest ? 'var(--color-success)' : 'var(--color-primary)'}">
+                                    ${userCount} ${userCount === 1 ? 'member' : 'members'} interested
+                                </span>
+                                ${isHighInterest ? '<span style="color: var(--color-success); font-weight: 600; font-size: 14px;">✓ Ready for negotiation!</span>' : ''}
+                            </div>
+                            ${!isMember ? `
+                                <div style="margin-top: 12px;">
+                                    <button class="btn-join" onclick="joinProduct(${product.id})">Add Me to This Group</button>
+                                </div>
+                            ` : ''}
+                            ${isMember ? `
+                                <div class="chat-section">
+                                    <h4 style="font-size: 14px; margin-bottom: 8px; color: var(--color-text);">Group Chat</h4>
+                                    <div class="chat-messages" id="chat-${product.id}">
+                                        ${chatMessages.length === 0 ? 
+                                            '<div class="chat-empty">No messages yet. Start the conversation!</div>' :
+                                            chatMessages.map(msg => `
+                                                <div class="chat-message">
+                                                    <strong>${msg.user.split('@')[0]}</strong>
+                                                    <div>${msg.message}</div>
+                                                    <span>${new Date(msg.timestamp).toLocaleString('en-IN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                                                </div>
+                                            `).join('')
+                                        }
+                                    </div>
+                                    <div class="chat-input-group">
+                                        <input type="text" class="chat-input" id="chatInput-${product.id}" placeholder="Type your message..." onkeypress="if(event.key==='Enter') sendMessage(${product.id})">
+                                        <button class="btn-send" onclick="sendMessage(${product.id})">Send</button>
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+                
+                html += `</div>`; // Close product-group div
+            });
+
+            productList.innerHTML = html;
+        }
+
+        // Tab switching
+        function switchTab(tab) {
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            
+            if (tab === 'add') {
+                document.getElementById('addTab').classList.remove('hidden');
+                document.getElementById('viewTab').classList.add('hidden');
+                document.querySelectorAll('.nav-tab')[0].classList.add('active');
+            } else {
+                document.getElementById('addTab').classList.add('hidden');
+                document.getElementById('viewTab').classList.remove('hidden');
+                document.querySelectorAll('.nav-tab')[1].classList.add('active');
+                displayProducts();
+            }
+        }
+
+        // Logout
+        function logout() {
+            currentUser = null;
+            showScreen('signinScreen');
+            document.getElementById('signinEmail').value = '';
+            document.querySelectorAll('.pin-digit').forEach(input => input.value = '');
+        }
+
+        // Join product group
+        function joinProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product && !product.users.includes(currentUser.email)) {
+                product.users.push(currentUser.email);
+                displayProducts();
+            }
+        }
+
+        // Send chat message
+        function sendMessage(productId) {
+            const inputField = document.getElementById(`chatInput-${productId}`);
+            const message = inputField.value.trim();
+            
+            if (!message) return;
+            
+            if (!chats[productId]) {
+                chats[productId] = [];
+            }
+            
+            chats[productId].push({
+                user: currentUser.email,
+                message: message,
+                timestamp: new Date()
+            });
+            
+            inputField.value = '';
+            displayProducts();
+            
+            // Scroll to bottom of chat
+            setTimeout(() => {
+                const chatDiv = document.getElementById(`chat-${productId}`);
+                if (chatDiv) chatDiv.scrollTop = chatDiv.scrollHeight;
+            }, 100);
+        }
+
+        // Set minimum month to current month and max to 24 months ahead
+        document.addEventListener('DOMContentLoaded', function() {
+            const monthInput = document.getElementById('purchaseMonth');
+            const today = new Date();
+            const currentMonth = today.toISOString().slice(0, 7);
+            
+            // Set max to 24 months from now
+            const maxDate = new Date(today);
+            maxDate.setMonth(maxDate.getMonth() + 24);
+            const maxMonth = maxDate.toISOString().slice(0, 7);
+            
+            monthInput.min = currentMonth;
+            monthInput.max = maxMonth;
+            monthInput.value = currentMonth;
+        });
+    </script>
+</body>
+</html>
